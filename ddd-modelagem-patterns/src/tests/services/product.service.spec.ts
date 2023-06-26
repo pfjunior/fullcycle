@@ -1,4 +1,5 @@
 import Product from "../../entities/product";
+import ProductService from "../../services/product.service";
 
 describe("Product Service Unit Test", () => {
     it("Should change the prices of all products", () => {
@@ -8,7 +9,7 @@ describe("Product Service Unit Test", () => {
 
         ProductService.increasePrice(products, 100);
 
-        expect(product1).toBe(20);
-        expect(product2).toBe(40);
+        expect(product1.price).toBe(20);
+        expect(product2.price).toBe(40);
     });
 });
