@@ -66,6 +66,6 @@ export default class Customer {
     }
 
     addRewardsPoints(points: number) {
-        this._rewardPoints = + points;
+        this._rewardPoints = this._rewardPoints + points;
     }
 }
