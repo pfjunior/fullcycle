@@ -1,4 +1,5 @@
-import Product from "../../entities/product";
+import Product from "../../../domain/entities/product";
+
 
 describe("Product Unit Test", () => {
     it("should throw error when id is empty", () => {
