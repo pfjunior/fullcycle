@@ -3,7 +3,7 @@ import Address from "./address";
 export default class Customer {
     private _id: string;
     private _name: string;
-    private _addess!: Address;
+    private _address!: Address;
     private _active: boolean = false;
     private _rewardPoints: number = 0;
 
@@ -25,6 +25,10 @@ export default class Customer {
         return this._rewardPoints;
     }
 
+    get address(): Address {
+        return this._address
+    }
+
     validate() {
         if (this._id.length === 0) {
             throw new Error("Id is required");
@@ -35,7 +39,7 @@ export default class Customer {
     }
 
     validateAddress(): boolean {
-        if (this._addess === undefined) {
+        if (this._address === undefined) {
             return false;
         }
         return true;
@@ -62,7 +66,7 @@ export default class Customer {
     }
 
     addAddress(address: Address) {
-        this._addess = address;
+        this._address = address;
     }
 
     addRewardsPoints(points: number) {
