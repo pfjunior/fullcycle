@@ -10,6 +10,7 @@ import ProductRepository from "../../../infrastructure/repository/product.reposi
 import Product from "../../../domain/entities/product";
 import OrderItem from "../../../domain/entities/order_item";
 import Order from "../../../domain/entities/order";
+import OrderRepository from "../../../infrastructure/repository/order.repository";
 
 describe("Order Repository Test", () => {
     let sequileze: Sequelize;
@@ -21,7 +22,7 @@ describe("Order Repository Test", () => {
             logging: false,
             sync: { force: true },
         });
-        sequileze.addModels([OrderModel, OrderItemModel, CustomerModel, ProductModel]);
+        sequileze.addModels([CustomerModel, OrderModel, OrderItemModel, ProductModel]);
         await sequileze.sync();
     });
 
@@ -41,7 +42,7 @@ describe("Order Repository Test", () => {
 
         const orderItem = new OrderItem("i1", product.name, product.price, product.id, 2);
 
-        const order = new Order("o1", customer.id, [orderItem]);
+        const order = new Order("o1", "c1", [orderItem]);
 
         const orderRepository = new OrderRepository();
         await orderRepository.create(order);
@@ -49,8 +50,8 @@ describe("Order Repository Test", () => {
         const orderModel = await OrderModel.findOne({ where: { id: order.id }, include: ["items"] });
 
         expect(orderModel.toJSON()).toStrictEqual({
-            id: order.id,
-            customer_id: customer.id,
+            id: "o1",
+            customer_id: "c1",
             total: order.total(),
             items: [
                 {
@@ -58,7 +59,8 @@ describe("Order Repository Test", () => {
                     name: orderItem.name,
                     price: orderItem.price,
                     quantity: orderItem.quantity,
-                    order_id: order.id
+                    order_id: "o1",
+                    product_id: "p1"
                 }
             ]
         })

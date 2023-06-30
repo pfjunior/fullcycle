@@ -19,7 +19,7 @@ export default class OrderModel extends Model {
     declare customer: CustomerModel;
 
     @HasMany(() => OrderItemModel)
-    declare item: OrderItemModel[];
+    declare items: OrderItemModel[];
 
     @Column({ allowNull: false })
     declare total: number;
