@@ -26,7 +26,7 @@ describe("Product Repository Test", () => {
         const customerRepository = new CustomerRepository();
         const customer = new Customer("c1", "Customer 01");
         const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
-        customer.addAddress(address);
+        customer.changeAddress(address);
         await customerRepository.create(customer);
 
         const customerModel = await CustomerModel.findOne({ where: { id: "c1" } });
@@ -47,7 +47,7 @@ describe("Product Repository Test", () => {
         const customerRepository = new CustomerRepository();
         const customer = new Customer("c1", "Customer 01");
         const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
-        customer.addAddress(address);
+        customer.changeAddress(address);
         await customerRepository.create(customer);
 
         customer.changeName("Customer 02");
@@ -70,7 +70,7 @@ describe("Product Repository Test", () => {
         const customerRepository = new CustomerRepository();
         const customer = new Customer("c1", "Customer 01");
         const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
-        customer.addAddress(address);
+        customer.changeAddress(address);
         await customerRepository.create(customer);
 
         const customerResult = await customerRepository.find(customer.id);
@@ -90,13 +90,13 @@ describe("Product Repository Test", () => {
         const customerRepository = new CustomerRepository();
         const customer1 = new Customer("c1", "Customer 01");
         const address1 = new Address("Street 1", 1, "Zipcode 1", "City 1");
-        customer1.addAddress(address1);
+        customer1.changeAddress(address1);
         customer1.addRewardsPoints(10);
         customer1.activate();
 
         const customer2 = new Customer("c2", "Customer 02");
         const address2 = new Address("Street 2", 2, "Zipcode 2", "City 2");
-        customer2.addAddress(address2);
+        customer2.changeAddress(address2);
         customer2.addRewardsPoints(20);
         customer2.activate();
 
