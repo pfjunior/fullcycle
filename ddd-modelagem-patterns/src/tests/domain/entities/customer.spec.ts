@@ -1,5 +1,5 @@
-import Address from "../../entities/address";
-import Customer from "../../entities/customer";
+import Address from "../../../domain/entities/address";
+import Customer from "../../../domain/entities/customer";
 
 describe("Customer Unit Test", () => {
     it("should throw error when id is empty", () => {
@@ -28,14 +28,14 @@ describe("Customer Unit Test", () => {
     it("should activate customer", () => {
         // arrange
         const customer = new Customer("c1", "Bruce");
-        customer.addAddress(new Address("Mansion St", 1, "12345-678", "Gotham City"));
+        customer.changeAddress(new Address("Mansion St", 1, "12345-678", "Gotham City"));
 
         // act
         customer.activate();
 
         // assert
         expect(customer.isActive()).toBe(true);
-    });    
+    });
 
     it("should deactivate customer", () => {
         // arrange
