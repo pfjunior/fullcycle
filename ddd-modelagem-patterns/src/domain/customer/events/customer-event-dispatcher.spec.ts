@@ -77,7 +77,7 @@ describe("Domain Events Tests", () => {
 
         expect(eventDispatcher.getEventHandlers["CustomerAddressChangedEvent"][0]).toMatchObject(eventHandler);
 
-        const customerAddressChangedEvent = new CustomerAddressChangedEvent({ street: "Street 01", number: "1", zip: "12345-678", city: "City 01" });
+        const customerAddressChangedEvent = new CustomerAddressChangedEvent({ id: "c1", name: "Customer 01", address: "Street 01, 1 - 12345-678 - City 01" });
 
         eventDispatcher.notify(customerAddressChangedEvent);
 
