@@ -4,6 +4,7 @@ import CustomerModel from "../../../infrastructure/customer/repositories/sequeli
 import CustomerRepository from "../../../infrastructure/customer/repositories/sequelize/customer.repository";
 import Customer from "../../../domain/customer/entities/customer";
 import Address from "../../../domain/customer/value-objects/address";
+import FindCustomerUseCase from "./find.customer.usecase";
 
 describe("Test Find Customer Use Case", () => {
     let sequileze: Sequelize;
@@ -38,9 +39,9 @@ describe("Test Find Customer Use Case", () => {
             name: "Customer 1",
             address: {
                 street: "Street 1",
+                city: "City 1",
                 number: 1,
-                zip: "12345-678",
-                city: "City 1"
+                zip: "12345-678"
             }
         };
 
