@@ -1,7 +1,7 @@
 import CustomerRepositoryInterface from "../../../domain/customer/interfaces/customer-repository.interface";
-import { InputFindCustomerDto, OutputFindCustomerDto } from "./find.customer.dto";
+import { InputFindCustomerDto, OutputFindCustomerDto } from "../find/find.customer.dto";
 
-export default class FindCustomerUseCase {
+export default class CreateCustomerUseCase {
     private _customerRepository: CustomerRepositoryInterface;
 
     constructor(customerRepository: CustomerRepositoryInterface) {
@@ -16,9 +16,9 @@ export default class FindCustomerUseCase {
             name: customer.name,
             address: {
                 street: customer.address.street,
-                number: customer.address.number,
-                zip: customer.address.zip,
                 city: customer.address.city,
+                number: customer.address.number,
+                zip: customer.address.zip
             }
         }
     }

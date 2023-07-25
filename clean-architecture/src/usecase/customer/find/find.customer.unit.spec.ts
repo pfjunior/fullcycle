@@ -27,9 +27,9 @@ describe("Unit Test Find Customer Use Case", () => {
             name: "Customer 1",
             address: {
                 street: "Street 1",
-                city: "City 1",
                 number: 1,
-                zip: "12345-678"
+                zip: "12345-678",
+                city: "City 1"
             }
         };
 
