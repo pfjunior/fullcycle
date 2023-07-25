@@ -31,16 +31,16 @@ export default class Address {
 
     validate() {
         if (this._street.length === 0) {
-            throw new Error("Street is requires");
+            throw new Error("Street is required");
         }
         if (this._number === 0) {
-            throw new Error("Number is requires");
+            throw new Error("Number is required");
         }
         if (this._zip.length === 0) {
-            throw new Error("Zip is requires");
+            throw new Error("Zip is required");
         }
         if (this._city.length === 0) {
-            throw new Error("City is requires");
+            throw new Error("City is required");
         }
     }
 

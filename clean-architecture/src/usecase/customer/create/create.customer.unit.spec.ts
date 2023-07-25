@@ -37,4 +37,22 @@ describe("Unit Test Create Customer Use Case", () => {
             }
         });
     });
+
+    it("should thrown an error when a name is missing", async () => {
+        const customerRepository = MockRepository();
+        const useCase = new CreateCustomerUseCase(customerRepository);
+
+        input.name = "";
+
+        await expect(useCase.execute(input)).rejects.toThrow("Name is required");
+    });
+
+    it("should thrown an error when a street is missing", async () => {
+        const customerRepository = MockRepository();
+        const useCase = new CreateCustomerUseCase(customerRepository);
+
+        input.address.street = "";
+
+        await expect(useCase.execute(input)).rejects.toThrow("Street is required");
+    });
 });
