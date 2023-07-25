@@ -1,3 +1,5 @@
+import CreateCustomerUseCase from "./create.customer.usecase";
+
 const input = {
     name: "Customer 1",
     address: {
@@ -34,15 +36,5 @@ describe("Unit Test Create Customer Use Case", () => {
                 city: input.address.city
             }
         });
-    });
-
-    it("should not find a customer", async () => {
-        const customerRepository = MockRepository();
-        customerRepository.find.mockImplementation(() => { throw new Error("Customer not found") });
-        const useCase = new FindCustomerUseCase(customerRepository);
-
-        const input = { id: "c1" };
-
-        expect(() => { return useCase.execute(input) }).rejects.toThrow("Customer not found");
     });
 });
