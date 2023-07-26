@@ -1,18 +1,15 @@
-import CustomerFactory from "../../../domain/customer/factories/customer.factory";
 import CustomerRepositoryInterface from "../../../domain/customer/interfaces/customer-repository.interface";
-import Address from "../../../domain/customer/value-objects/address";
-import { InputCreateCustomerDto, OutputCreateCustomerDto } from "./create.customer.dto";
+import { InputListCustomerDto, OutputListCustomerDto } from "./list.customer.dto";
 
-export default class CreateCustomerUseCase {
+export default class ListCustomerUseCase {
     private _customerRepository: CustomerRepositoryInterface;
 
     constructor(customerRepository: CustomerRepositoryInterface) {
         this._customerRepository = customerRepository;
     }
 
-    async execute(input: InputCreateCustomerDto): Promise<OutputCreateCustomerDto> {
-        const customer = CustomerFactory.createWithAddress(input.name, new Address(input.address.street, input.address.number, input.address.zip, input.address.city));
-        await this._customerRepository.create(customer);
+    async execute(): Promise<OutputListCustomerDto> {
+        const customer = await this._customerRepository.findAll();
 
         return {
             id: customer.id,

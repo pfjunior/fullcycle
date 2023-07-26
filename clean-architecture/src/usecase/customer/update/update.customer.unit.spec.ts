@@ -6,7 +6,7 @@ const customer = CustomerFactory.createWithAddress("Customer 1", new Address("St
 
 const input = {
     id: customer.id,
-    name: "Customer Updated",
+    name: "Customer 1 Updated",
     address: {
         street: "Street 1 Updated",
         number: 101,
@@ -17,9 +17,9 @@ const input = {
 
 const MockRepository = () => {
     return {
-        find: jest.fn(),
+        find: jest.fn().mockReturnValue(Promise.resolve(customer)),
         findAll: jest.fn(),
-        create: jest.fn().mockReturnValue(Promise.resolve(customer)),
+        create: jest.fn(),
         update: jest.fn()
     };
 };
