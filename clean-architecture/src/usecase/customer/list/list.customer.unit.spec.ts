@@ -19,7 +19,7 @@ describe("Unit Test for Listing Customer Use Case", () => {
         const customerRepository = MockRepository();
         const useCase = new ListCustomerUseCase(customerRepository);
 
-        const output = await useCase.execute();
+        const output = await useCase.execute({});
 
         expect(output.customers.length).toBe(2);
         expect(output.customers[0].id).toBe(customer1.id);

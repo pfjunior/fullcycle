@@ -1,5 +1,6 @@
 import CustomerRepositoryInterface from "../../../domain/customer/interfaces/customer-repository.interface";
 import { InputListCustomerDto, OutputListCustomerDto } from "./list.customer.dto";
+import { OutputMapper } from "./output.mapper";
 
 export default class ListCustomerUseCase {
     private _customerRepository: CustomerRepositoryInterface;
@@ -8,18 +9,9 @@ export default class ListCustomerUseCase {
         this._customerRepository = customerRepository;
     }
 
-    async execute(): Promise<OutputListCustomerDto> {
-        const customer = await this._customerRepository.findAll();
+    async execute(input: InputListCustomerDto): Promise<OutputListCustomerDto> {
+        const customers = await this._customerRepository.findAll();
 
-        return {
-            id: customer.id,
-            name: customer.name,
-            address: {
-                street: customer.address.street,
-                number: customer.address.number,
-                zip: customer.address.zip,
-                city: customer.address.city
-            }
-        }
+        return OutputMapper.toOutput(customers);
     }
 }
