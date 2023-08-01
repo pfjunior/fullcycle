@@ -2,8 +2,6 @@ import Entity from "../../shared/entities/entity.abstract";
 import NotificationError from "../../shared/notification/notification.error";
 import Address from "../value-objects/address";
 
-
-
 export default class Customer extends Entity {
     private _name: string;
     private _address!: Address;
