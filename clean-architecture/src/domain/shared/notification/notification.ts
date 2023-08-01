@@ -10,6 +10,10 @@ export default class Notification {
         this._errors.push(error);
     }
 
+    hasErrors(): boolean {
+        return this._errors.length > 0;
+    }
+
     messages(context?: string): string {
         let message = "";
         this._errors.forEach((error) => {
