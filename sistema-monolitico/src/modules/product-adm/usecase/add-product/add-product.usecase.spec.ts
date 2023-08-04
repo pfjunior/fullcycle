@@ -1,3 +1,5 @@
+import AddProductUseCase from "./add-product.usecase";
+
 const MockRepository = () => {
     return {
         add: jest.fn(),
@@ -17,8 +19,13 @@ describe("Add Product Usecase Unit Test", () => {
             stock: 10
         };
 
-        usecase.execute(input);
+        const result = await usecase.execute(input);
 
-        // output
+        expect(repository.add).toHaveBeenCalled();
+        expect(result.id).toBeDefined();
+        expect(result.name).toBe(input.name);
+        expect(result.description).toBe(input.description);
+        expect(result.purchasePrice).toBe(input.purchasePrice);
+        expect(result.stock).toBe(input.stock);
     });
 });
