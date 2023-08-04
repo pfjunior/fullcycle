@@ -8,8 +8,6 @@ type ProductProps = {
     description: string;
     purchasePrice: number;
     stock: number;
-    // createdAt: Date;
-    // updatedAt: Date;
 }
 export default class Product extends BaseEntity implements AggregateRoot {
     private _name: string;
