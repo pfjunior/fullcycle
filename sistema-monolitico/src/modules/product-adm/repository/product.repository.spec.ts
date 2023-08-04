@@ -21,7 +21,7 @@ describe("Product Repository Test", () => {
 
     afterEach(async () => {
         await sequelize.close();
-    })
+    });
 
     it("should create a product", async () => {
         const props = {
