@@ -1,6 +1,6 @@
 import Product from "../domain/product.entity";
 
 export default interface ProductGateway {
-    findall(): Promise<Product[]>;
+    findAll(): Promise<Product[]>;
     find(id: string): Promise<Product>;
 }

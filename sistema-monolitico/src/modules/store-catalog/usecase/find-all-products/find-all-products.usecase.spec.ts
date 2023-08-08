@@ -1,5 +1,6 @@
 import Id from "../../../shared/domain/value-object/id.value-object";
 import Product from "../../domain/product.entity";
+import FindAllProductsUseCase from "./find-all-products.usecase";
 
 const product = new Product({
     id: new Id("p1"),
