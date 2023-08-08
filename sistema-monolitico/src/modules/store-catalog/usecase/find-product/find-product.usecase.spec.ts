@@ -11,7 +11,7 @@ const product = new Product({
 
 const MockRepository = () => {
     return {
-        find: jest.fn().mockReturnValue(Promise.resolve([product])),
+        find: jest.fn().mockReturnValue(Promise.resolve(product)),
         findAll: jest.fn()
     };
 };
@@ -21,15 +21,12 @@ describe("Find Product Usecase Unit Test", () => {
         const repository = MockRepository();
         const useCase = new FindProductUseCase(repository);
 
-        const input = { id: product.id.id }
-
-        const result = await useCase.execute(input);
+        const result = await useCase.execute({ id: product.id.id });
 
         expect(repository.find).toHaveBeenCalled();
-        expect(result.products.length).toBe(2);
-        expect(result.products.id).toBe(product.id.id);
-        expect(result.products.name).toBe(product.name);
-        expect(result.products.description).toBe(product.description);
-        expect(result.products.salesPrice).toBe(product.salesPrice);
+        expect(result.id).toBe(product.id.id);
+        expect(result.name).toBe(product.name);
+        expect(result.description).toBe(product.description);
+        expect(result.salesPrice).toBe(product.salesPrice);
     });
 });
