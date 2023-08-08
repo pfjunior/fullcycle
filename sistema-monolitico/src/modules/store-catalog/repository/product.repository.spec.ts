@@ -49,4 +49,21 @@ describe("Product Repository Test", () => {
         expect(products[1].description).toBe(product2.description);
         expect(products[1].salesPrice).toBe(product2.salesPrice);
     });
+
+    it("should find a product", async () => {
+        const product = await ProductModel.create({
+            id: "p1",
+            name: "Product 1",
+            description: "Product 1 Description",
+            salesPrice: 100,
+        });
+
+        const repository = new ProductRepository();
+        const result = await repository.find(product.id);
+
+        expect(result.id.id).toBe(product.id);
+        expect(result.name).toBe(product.name);
+        expect(result.description).toBe(product.description);
+        expect(result.salesPrice).toBe(product.salesPrice);
+    });
 });
