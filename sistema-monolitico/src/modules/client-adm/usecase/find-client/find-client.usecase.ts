@@ -1,21 +1,15 @@
-import Client from "../../domain/client.entity";
 import ClientGateway from "../../gateway/client.gateway";
-import { AddClientInputDto, AddClientOutputDto } from "./add-client.usecase.dto";
+import { FindClientInputDto, FindClientOutputDto } from "./find-client.usecase.dto";
 
-export default class AddClientUseCase {
+export default class FindClientUseCase {
     private _repository: ClientGateway;
 
     constructor(repository: ClientGateway) {
         this._repository = repository;
     }
 
-    async execute(input: AddClientInputDto): Promise<AddClientOutputDto> {
-        const client = new Client({
-            name: input.name,
-            email: input.email,
-            address: input.address
-        });
-        this._repository.add(client)
+    async execute(input: FindClientInputDto): Promise<FindClientOutputDto> {
+        const client = await this._repository.find(input.id);
 
         return {
             id: client.id.id,

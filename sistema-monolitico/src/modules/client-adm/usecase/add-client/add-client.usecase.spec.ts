@@ -22,8 +22,8 @@ describe("Add Client Usecase Unit Test", () => {
 
         expect(repostory.add).toHaveBeenCalled();
         expect(result.id).toBeDefined();
-        expect(result.name).toBe(input.name);
-        expect(result.email).toBe(input.email);
-        expect(result.address).toBe(input.address);
+        expect(result.name).toEqual(input.name);
+        expect(result.email).toEqual(input.email);
+        expect(result.address).toEqual(input.address);
     });
 });
