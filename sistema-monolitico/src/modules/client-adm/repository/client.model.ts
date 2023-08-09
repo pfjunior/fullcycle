@@ -22,5 +22,5 @@ export class ClientModel extends Model {
     declare createdAt: Date;
 
     @Column({ allowNull: false })
-    declare updateAt: Date;
+    declare updatedAt: Date;
 }
