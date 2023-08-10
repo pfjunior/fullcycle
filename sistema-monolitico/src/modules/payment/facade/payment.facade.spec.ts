@@ -1,6 +1,4 @@
 import { Sequelize } from "sequelize-typescript";
-import Transaction from "../domain/transaction.entity";
-import Id from "../../shared/domain/value-object/id.value-object";
 import { TransactionModel } from "../repository/transaction.model";
 import TransactionRepository from "../repository/transaction.repository";
 import ProcessPaymentUseCase from "../usecase/process-payment/process-payment.usecase";
