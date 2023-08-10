@@ -1,0 +1,25 @@
+import AggregateRoot from "../../shared/domain/entities/aggregate-root.interface";
+import BaseEntity from "../../shared/domain/entities/base.entity";
+import Id from "../../shared/domain/value-object/id.value-object"
+
+type TransactionProps = {
+    id?: Id;
+    amount: number;
+    orderId: string;
+    status?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export default class Transaction extends BaseEntity implements AggregateRoot {
+    private _amount: number;
+    private _orderId: string;
+    private _status: string;
+
+    constructor(props: TransactionProps) {
+        super(props.id, props.createdAt, props.updatedAt);
+        this._amount = props.amount;
+        this._orderId = props.orderId;
+        this._status = props.status || "pending";
+    }
+}
