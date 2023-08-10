@@ -5,6 +5,7 @@ import { TransactionModel } from "../repository/transaction.model";
 import TransactionRepository from "../repository/transaction.repository";
 import ProcessPaymentUseCase from "../usecase/process-payment/process-payment.usecase";
 import PaymentFacade from "./payment.facade";
+import PaymentFacadeFactory from "../factory/payment.facade.factory";
 
 describe("Client Repository Test", () => {
     let sequelize: Sequelize;
@@ -36,6 +37,22 @@ describe("Client Repository Test", () => {
         };
 
         const result = await facade.process(input);
+
+        expect(result.transactionId).toBeDefined();
+        expect(result.orderId).toBe(input.orderId);
+        expect(result.amount).toBe(input.amount);
+        expect(result.status).toBe("approved");
+    });
+
+    it("should create a transaction with factory", async () => {
+        const factory = PaymentFacadeFactory.create();
+
+        const input = {
+            amount: 100,
+            orderId: "o1"
+        };
+
+        const result = await factory.process(input);
 
         expect(result.transactionId).toBeDefined();
         expect(result.orderId).toBe(input.orderId);
