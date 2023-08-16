@@ -1,45 +1,8 @@
 import { Sequelize } from "sequelize-typescript";
 import { InvoiceModel } from "./invoice.model";
 import { InvoiceItemModel } from "./invoice-item.model";
-import Id from "../../shared/domain/value-object/id.value-object";
-import Address from "../domain/address.value-object";
-import InvoiceItem from "../domain/invoice-item.entity";
 import InvoiceRepository from "./invoice.repository";
-import Invoice from "../domain/invoice.entity";
-
-const item1 = new InvoiceItem({
-    id: new Id("p01"),
-    name: "product 01",
-    price: 100,
-    createdAt: new Date(),
-    updatedAt: new Date()
-});
-
-const item2 = new InvoiceItem({
-    id: new Id("p02"),
-    name: "product 02",
-    price: 200,
-    createdAt: new Date(),
-    updatedAt: new Date()
-});
-
-const input = new Invoice({
-    id: new Id("i1"),
-    name: "client 01",
-    document: "12345678910",
-    address: new Address({
-        street: "street 01",
-        number: "101",
-        complement: "Complement 01",
-        city: "city 01",
-        state: "state 01",
-        zipCode: "12345-678",
-    }),
-    items: [item1, item2],
-    createdAt: new Date(),
-    updatedAt: new Date()
-});
-
+import InvoiceInput from "../../shared/tests/invoice.input";
 
 describe("Invoice Repository Test", () => {
     let sequelize: Sequelize;
@@ -62,41 +25,41 @@ describe("Invoice Repository Test", () => {
 
     it("should generate an invoice", async () => {
         const repository = new InvoiceRepository();
-        await repository.generate(input);
+        await repository.generate(InvoiceInput.input);
 
-        const result = await InvoiceModel.findOne({ where: { id: input.id.id }, include: ["items"] });
+        const result = await InvoiceModel.findOne({ where: { id: InvoiceInput.input.id.id }, include: ["items"] });
 
         expect(result.id).toBeDefined();
-        expect(result.name).toEqual(input.name);
-        expect(result.document).toEqual(input.document);
-        expect(result.street).toEqual(input.address.street);
-        expect(result.number).toEqual(input.address.number);
-        expect(result.complement).toEqual(input.address.complement);
-        expect(result.city).toEqual(input.address.city);
-        expect(result.state).toEqual(input.address.state);
-        expect(result.zipCode).toEqual(input.address.zipCode);
+        expect(result.name).toEqual(InvoiceInput.input.name);
+        expect(result.document).toEqual(InvoiceInput.input.document);
+        expect(result.street).toEqual(InvoiceInput.input.address.street);
+        expect(result.number).toEqual(InvoiceInput.input.address.number);
+        expect(result.complement).toEqual(InvoiceInput.input.address.complement);
+        expect(result.city).toEqual(InvoiceInput.input.address.city);
+        expect(result.state).toEqual(InvoiceInput.input.address.state);
+        expect(result.zipCode).toEqual(InvoiceInput.input.address.zipCode);
         expect(result.items.length).toBe(2);
-        expect(result.items[0].id).toEqual(input.items[0].id.id);
-        expect(result.items[0].name).toEqual(input.items[0].name);
-        expect(result.items[0].price).toEqual(input.items[0].price);
-        expect(result.items[1].id).toEqual(input.items[1].id.id);
-        expect(result.items[1].name).toEqual(input.items[1].name);
-        expect(result.items[1].price).toEqual(input.items[1].price);
+        expect(result.items[0].id).toEqual(InvoiceInput.input.items[0].id.id);
+        expect(result.items[0].name).toEqual(InvoiceInput.input.items[0].name);
+        expect(result.items[0].price).toEqual(InvoiceInput.input.items[0].price);
+        expect(result.items[1].id).toEqual(InvoiceInput.input.items[1].id.id);
+        expect(result.items[1].name).toEqual(InvoiceInput.input.items[1].name);
+        expect(result.items[1].price).toEqual(InvoiceInput.input.items[1].price);
     });
 
     it("should find an invoice", async () => {
         await InvoiceModel.create(
             {
-                id: input.id.id,
-                name: input.name,
-                document: input.document,
-                street: input.address.street,
-                number: input.address.number,
-                complement: input.address.complement,
-                city: input.address.city,
-                state: input.address.state,
-                zipCode: input.address.zipCode,
-                items: input.items.map((item) => {
+                id: InvoiceInput.input.id.id,
+                name: InvoiceInput.input.name,
+                document: InvoiceInput.input.document,
+                street: InvoiceInput.input.address.street,
+                number: InvoiceInput.input.address.number,
+                complement: InvoiceInput.input.address.complement,
+                city: InvoiceInput.input.address.city,
+                state: InvoiceInput.input.address.state,
+                zipCode: InvoiceInput.input.address.zipCode,
+                items: InvoiceInput.input.items.map((item) => {
                     return {
                         id: item.id.id,
                         name: item.name,
@@ -105,8 +68,8 @@ describe("Invoice Repository Test", () => {
                         updatedAt: item.updatedAt
                     };
                 }),
-                createdAt: input.createdAt,
-                updatedAt: input.updatedAt
+                createdAt: InvoiceInput.input.createdAt,
+                updatedAt: InvoiceInput.input.updatedAt
             },
             {
                 include: [{ model: InvoiceItemModel }]
@@ -114,23 +77,23 @@ describe("Invoice Repository Test", () => {
         );
 
         const repository = new InvoiceRepository();
-        const result = await repository.find(input.id.id);
+        const result = await repository.find(InvoiceInput.input.id.id);
 
         expect(result.id).toBeDefined();
-        expect(result.name).toEqual(input.name);
-        expect(result.document).toEqual(input.document);
-        expect(result.address.street).toEqual(input.address.street);
-        expect(result.address.number).toEqual(input.address.number);
-        expect(result.address.complement).toEqual(input.address.complement);
-        expect(result.address.city).toEqual(input.address.city);
-        expect(result.address.state).toEqual(input.address.state);
-        expect(result.address.zipCode).toEqual(input.address.zipCode);
+        expect(result.name).toEqual(InvoiceInput.input.name);
+        expect(result.document).toEqual(InvoiceInput.input.document);
+        expect(result.address.street).toEqual(InvoiceInput.input.address.street);
+        expect(result.address.number).toEqual(InvoiceInput.input.address.number);
+        expect(result.address.complement).toEqual(InvoiceInput.input.address.complement);
+        expect(result.address.city).toEqual(InvoiceInput.input.address.city);
+        expect(result.address.state).toEqual(InvoiceInput.input.address.state);
+        expect(result.address.zipCode).toEqual(InvoiceInput.input.address.zipCode);
         expect(result.items.length).toBe(2);
-        expect(result.items[0].id.id).toEqual(input.items[0].id.id);
-        expect(result.items[0].name).toEqual(input.items[0].name);
-        expect(result.items[0].price).toEqual(input.items[0].price);
-        expect(result.items[1].id.id).toEqual(input.items[1].id.id);
-        expect(result.items[1].name).toEqual(input.items[1].name);
-        expect(result.items[1].price).toEqual(input.items[1].price);
+        expect(result.items[0].id.id).toEqual(InvoiceInput.input.items[0].id.id);
+        expect(result.items[0].name).toEqual(InvoiceInput.input.items[0].name);
+        expect(result.items[0].price).toEqual(InvoiceInput.input.items[0].price);
+        expect(result.items[1].id.id).toEqual(InvoiceInput.input.items[1].id.id);
+        expect(result.items[1].name).toEqual(InvoiceInput.input.items[1].name);
+        expect(result.items[1].price).toEqual(InvoiceInput.input.items[1].price);
     });
 });
