@@ -1,4 +1,4 @@
-import InvoiceGateway from "../../Gateway/invoice.gateway";
+import InvoiceGateway from "../../gateway/invoice.gateway";
 import { FindInvoiceUseCaseInputDto, FindInvoiceUseCaseOutputDto } from "./find-invoice.usecase.dto";
 
 export default class FindInvoiceUseCase {
