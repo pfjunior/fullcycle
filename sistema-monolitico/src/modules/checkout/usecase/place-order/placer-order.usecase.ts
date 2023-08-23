@@ -20,6 +20,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     }
 
     // Validar produto - Função a parte
+    await this.validateProducts(input);
 
     // Recuperar os produtos
 
@@ -33,6 +34,18 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
 
     // Retornar dto
 
-    return;
+    return {
+      id: "",
+      invoiceId: "",
+      status: "",
+      total: 0,
+      products: [],
+    };
+  }
+
+  private async validateProducts(input: PlaceOrderInputDto): Promise<void> {
+    if (input.products.length === 0) {
+      throw new Error("No products selected");
+    }
   }
 }

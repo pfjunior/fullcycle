@@ -22,7 +22,7 @@ describe("Place Order UseCase Unit Test", () => {
 
     it("should throw an error when products are not valid", async () => {
       const mockClientFacade = {
-        find: jest.fn().mockResolvedValue(null),
+        find: jest.fn().mockResolvedValue(true),
       };
 
       // @ts-expect-error - no params in constructor
@@ -35,7 +35,7 @@ describe("Place Order UseCase Unit Test", () => {
         // @ts-expect-error - spy on private method
         .spyOn(placerOrderUseCase, "validateProducts")
         // @ts-expect-error - not return never
-        .mockResolvedValue(new Error("No products selected"));
+        .mockRejectedValue(new Error("No products selected"));
 
       const input: PlaceOrderInputDto = { clientId: "c1", products: [] };
 
