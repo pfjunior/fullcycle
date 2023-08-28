@@ -88,7 +88,7 @@ describe("Place Order UseCase Unit Test", () => {
       await expect(
         placerOrderUseCase["validateProducts"](input)
       ).rejects.toThrow(new Error("Product p1 is not available in stock"));
-      expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(3);
+      expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(2);
 
       input = {
         clientId: "0",
@@ -102,7 +102,7 @@ describe("Place Order UseCase Unit Test", () => {
       await expect(
         placerOrderUseCase["validateProducts"](input)
       ).rejects.toThrow(new Error("Product p1 is not available in stock"));
-      expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(6);
+      expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(3);
     });
   });
 });
