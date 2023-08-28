@@ -1,6 +1,8 @@
 import PlaceOrderUseCase from "./placer-order.usecase";
 import { PlaceOrderInputDto } from "./placer-order.usecase.dto";
 
+const mockDate = new Date(2023, 1, 1);
+
 describe("Place Order UseCase Unit Test", () => {
   describe("Execute Method", () => {
     it("should throw an error when client not found", async () => {
@@ -103,6 +105,31 @@ describe("Place Order UseCase Unit Test", () => {
         placerOrderUseCase["validateProducts"](input)
       ).rejects.toThrow(new Error("Product p1 is not available in stock"));
       expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe("getProducts methods", () => {
+    beforeAll(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(mockDate);
+    });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    });
+
+    // @ts-expect-error - no params in constructor
+    const placerOrderUseCase = new PlaceOrderUseCase();
+
+    it("should throw an error when product not found", async () => {
+      const mockCatalogFacade = { find: jest.fn().mockResolvedValue(null) };
+
+      // @ts-expect-error - force set catalogFacade
+      placerOrderUseCase["_catalogFacade"] = mockCatalogFacade;
+
+      await expect(placerOrderUseCase["getProduct"]("0")).rejects.toThrow(
+        new Error("Product not found")
+      );
     });
   });
 });
