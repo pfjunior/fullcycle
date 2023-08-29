@@ -1,6 +1,9 @@
 import ClientAdmFacadeInterface from "../../../client-adm/facade/client-adm.facade.interface";
 import ProducAdmFacadeInterface from "../../../product-adm/facade/product-adm.facade.interface";
+import Id from "../../../shared/domain/value-object/id.value-object";
 import UseCaseInterface from "../../../shared/usecase/use-case.interface";
+import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
+import Product from "../../domain/product.entity";
 import {
   PlaceOrderInputDto,
   PlaceOrderOutputDto,
@@ -9,13 +12,16 @@ import {
 export default class PlaceOrderUseCase implements UseCaseInterface {
   private _clientFacade: ClientAdmFacadeInterface;
   private _productFacade: ProducAdmFacadeInterface;
+  private _catalogFacade: StoreCatalogFacadeInterface;
 
   constructor(
     clientFacade: ClientAdmFacadeInterface,
-    productFacade: ProducAdmFacadeInterface
+    productFacade: ProducAdmFacadeInterface,
+    catalogFacade: StoreCatalogFacadeInterface
   ) {
     this._clientFacade = clientFacade;
     this._productFacade = productFacade;
+    this._catalogFacade = catalogFacade;
   }
 
   async execute(input: PlaceOrderInputDto): Promise<PlaceOrderOutputDto> {
@@ -65,5 +71,20 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         );
       }
     }
+  }
+
+  private async getProduct(productId: string): Promise<Product> {
+    const product = await this._catalogFacade.find({ id: productId });
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    return new Product({
+      id: new Id(product.id),
+      name: product.name,
+      description: product.description,
+      salesPrice: product.salesPrice,
+    });
   }
 }
