@@ -35,6 +35,9 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     await this.validateProducts(input);
 
     // Recuperar os produtos
+    const product = await Promise.all(
+      input.products.map((p) => this.getProduct(p.productId))
+    );
 
     // Criar o objeto de client
 
