@@ -6,6 +6,15 @@ import { PlaceOrderInputDto } from "./placer-order.usecase.dto";
 const mockDate = new Date(2023, 1, 1);
 
 describe("Place Order UseCase Unit Test", () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(mockDate);
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   describe("Execute Method", () => {
     it("should throw an error when client not found", async () => {
       const mockClientFacade = {
@@ -47,6 +56,63 @@ describe("Place Order UseCase Unit Test", () => {
         new Error("No products selected")
       );
       expect(mockValidateProducts).toHaveBeenCalledTimes(1);
+    });
+
+    describe("place an order", () => {
+      const clientProps = {
+        id: "c1",
+        name: "Client 1",
+        email: "client@email.com",
+        address: "Street 1, 101 - City 1",
+      };
+
+      const mockClientFacade = {
+        find: jest.fn().mockResolvedValue(clientProps),
+      };
+
+      const mockPaymentFacade = { process: jest.fn() };
+
+      const mockCheckoutRepository = { addOrder: jest.fn() };
+
+      const mockInvoiceFacade = { create: jest.fn().mockResolvedValue("i1") };
+
+      const placeOrderUseCase = new PlaceOrderUseCase(
+        mockClientFacade,
+        null,
+        null,
+        mockCheckoutRepository,
+        mockInvoiceFacade,
+        mockPaymentFacade
+      );
+
+      const products = {
+        "1": new Product({
+          id: new Id("p1"),
+          name: "Product 01",
+          description: "Product 01 Description",
+          salesPrice: 40,
+        }),
+        "2": new Product({
+          id: new Id("p2"),
+          name: "Product 02",
+          description: "Product 02 Description",
+          salesPrice: 30,
+        }),
+      };
+
+      const mockValidateProducts = jest
+        // @ts-expect-error - spy on private method
+        .spyOn(placeOrderUseCase, "validateProducts")
+        // @ts-expect-error - spy on private method
+        .mockResolvedValue(null);
+
+      const mockGetProduct = jest
+        // @ts-expect-error - spy on private method
+        .spyOn(placeOrderUseCase, "getProduct")
+        // @ts-expect-error - not return never
+        .mockImplementation((productId: keyof typeof products) => {
+          return products[productId];
+        });
     });
   });
 
