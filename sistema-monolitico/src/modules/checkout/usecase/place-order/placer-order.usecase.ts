@@ -2,6 +2,7 @@ import ClientAdmFacadeInterface from "../../../client-adm/facade/client-adm.faca
 import InvoiceFacadeInterface from "../../../invoice/facade/invoice.facade.interface";
 import PaymentFacadeInterface from "../../../payment/facade/payment.facade.interface";
 import ProducAdmFacadeInterface from "../../../product-adm/facade/product-adm.facade.interface";
+import Address from "../../../shared/domain/value-object/address.value-object";
 import Id from "../../../shared/domain/value-object/id.value-object";
 import UseCaseInterface from "../../../shared/usecase/use-case.interface";
 import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
@@ -58,7 +59,15 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       id: new Id(client.id),
       name: client.name,
       email: client.email,
-      address: client.address,
+      document: client.document,
+      address: new Address(
+        "Street 1",
+        "101",
+        "Complement 1",
+        "City 1",
+        "State 1",
+        "12345-678"
+      ),
     });
 
     // Cirar o objeto de order(client, products)
@@ -73,15 +82,15 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     // Caso pagamento seja aprovado -> gerar invoice
     const invoice =
       payment.status === "approved"
-        ? await this._invoiceFacade.create({
+        ? await this._invoiceFacade.generate({
             name: client.name,
             document: client.document,
-            street: client.street,
-            complement: client.complement,
-            number: client.number,
-            city: client.city,
-            state: client.state,
-            zipCode: client.zipCode,
+            street: client.address.street,
+            complement: client.address.complement,
+            number: client.address.number,
+            city: client.address.city,
+            state: client.address.state,
+            zipCode: client.address.zipCode,
             items: products.map((p) => {
               return { id: p.id.id, name: p.name, price: p.salesPrice };
             }),

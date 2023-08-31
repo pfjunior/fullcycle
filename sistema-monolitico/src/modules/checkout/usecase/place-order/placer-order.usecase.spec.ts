@@ -67,14 +67,21 @@ describe("Place Order UseCase Unit Test", () => {
       };
 
       const mockClientFacade = {
+        add: jest.fn(),
         find: jest.fn().mockResolvedValue(clientProps),
       };
 
       const mockPaymentFacade = { process: jest.fn() };
 
-      const mockCheckoutRepository = { addOrder: jest.fn() };
+      const mockCheckoutRepository = {
+        addOrder: jest.fn(),
+        findOrder: jest.fn(),
+      };
 
-      const mockInvoiceFacade = { create: jest.fn().mockResolvedValue("i1") };
+      const mockInvoiceFacade = {
+        generate: jest.fn().mockResolvedValue("i1"),
+        find: jest.fn(),
+      };
 
       const placeOrderUseCase = new PlaceOrderUseCase(
         mockClientFacade,
@@ -148,7 +155,7 @@ describe("Place Order UseCase Unit Test", () => {
           orderId: output.id,
           amount: output.total,
         });
-        expect(mockInvoiceFacade.create).toHaveBeenCalledTimes(0);
+        expect(mockInvoiceFacade.generate).toHaveBeenCalledTimes(0);
       });
     });
   });
