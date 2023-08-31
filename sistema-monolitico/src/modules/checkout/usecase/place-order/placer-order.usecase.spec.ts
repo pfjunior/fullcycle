@@ -1,3 +1,4 @@
+import Address from "../../../shared/domain/value-object/address.value-object";
 import Id from "../../../shared/domain/value-object/id.value-object";
 import Product from "../../domain/product.entity";
 import PlaceOrderUseCase from "./placer-order.usecase";
@@ -62,33 +63,34 @@ describe("Place Order UseCase Unit Test", () => {
       const clientProps = {
         id: "c1",
         name: "Client 1",
-        email: "client@email.com",
-        address: "Street 1, 101 - City 1",
+        email: "client1@email.com",
+        document: "123.456.789-00",
+        address: new Address(
+          "Street 1",
+          "101",
+          "Complement 1",
+          "City 1",
+          "State 1",
+          "12345-678"
+        ),
       };
 
       const mockClientFacade = {
-        add: jest.fn(),
         find: jest.fn().mockResolvedValue(clientProps),
       };
 
       const mockPaymentFacade = { process: jest.fn() };
 
-      const mockCheckoutRepository = {
-        addOrder: jest.fn(),
-        findOrder: jest.fn(),
-      };
+      const mockCheckoutRepository = { addOrder: jest.fn() };
 
-      const mockInvoiceFacade = {
-        generate: jest.fn().mockResolvedValue("i1"),
-        find: jest.fn(),
-      };
+      const mockInvoiceFacade = { generate: jest.fn().mockResolvedValue("i1") };
 
       const placeOrderUseCase = new PlaceOrderUseCase(
-        mockClientFacade,
+        mockClientFacade as any,
         null,
         null,
-        mockCheckoutRepository,
-        mockInvoiceFacade,
+        mockCheckoutRepository as any,
+        mockInvoiceFacade as any,
         mockPaymentFacade
       );
 
@@ -156,6 +158,65 @@ describe("Place Order UseCase Unit Test", () => {
           amount: output.total,
         });
         expect(mockInvoiceFacade.generate).toHaveBeenCalledTimes(0);
+      });
+
+      it("should be approved", async () => {
+        mockPaymentFacade.process = mockPaymentFacade.process.mockReturnValue({
+          transactionId: "t1",
+          orderId: "o1",
+          amount: 100,
+          status: "approved",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        const input: PlaceOrderInputDto = {
+          clientId: "c1",
+          products: [{ productId: "p1" }, { productId: "p2" }],
+        };
+
+        let output = await placeOrderUseCase.execute(input);
+
+        // expect(output.invoiceId).toBe("i1");
+        expect(output.total).toBe(70);
+        expect(output.products).toStrictEqual([
+          { productId: "p1" },
+          { productId: "p2" },
+        ]);
+        expect(mockClientFacade.find).toHaveBeenCalledTimes(1);
+        expect(mockClientFacade.find).toHaveBeenCalledWith({ id: "c1" });
+        expect(mockValidateProducts).toHaveBeenCalledTimes(1);
+        expect(mockGetProduct).toHaveBeenCalledTimes(2);
+        expect(mockCheckoutRepository.addOrder).toHaveBeenCalledTimes(1);
+        expect(mockPaymentFacade.process).toHaveBeenCalledTimes(1);
+        expect(mockPaymentFacade.process).toHaveBeenCalledWith({
+          orderId: output.id,
+          amount: output.total,
+        });
+        expect(mockInvoiceFacade.generate).toHaveBeenCalledTimes(1);
+        // expect(mockInvoiceFacade.generate).toHaveBeenCalledWith({
+        //   name: clientProps.name,
+        //   document: clientProps.document,
+        //   email: clientProps.email,
+        //   street: clientProps.address.street,
+        //   number: clientProps.address.number,
+        //   complement: clientProps.address.complement,
+        //   city: clientProps.address.city,
+        //   state: clientProps.address.state,
+        //   zipCode: clientProps.address.zipCode,
+        //   items: [
+        //     {
+        //       id: products["p1"].id.id,
+        //       name: products["p1"].name,
+        //       price: products["p1"].salesPrice,
+        //     },
+        //     {
+        //       id: products["p2"].id.id,
+        //       name: products["p2"].name,
+        //       price: products["p2"].salesPrice,
+        //     },
+        //   ],
+        // });
       });
     });
   });
