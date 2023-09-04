@@ -61,12 +61,12 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
       email: client.email,
       document: client.document,
       address: new Address(
-        "Street 1",
-        "101",
-        "Complement 1",
-        "City 1",
-        "State 1",
-        "12345-678"
+        client.address.street,
+        client.address.number,
+        client.address.complement,
+        client.address.city,
+        client.address.state,
+        client.address.zipCode
       ),
     });
 
@@ -98,7 +98,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         : null;
 
     // Mudar o status da order para approved
-    payment.status == "approved" && order.approved();
+    payment.status === "approved" && order.approved();
     this._repository.addOrder(order);
 
     // Retornar dto

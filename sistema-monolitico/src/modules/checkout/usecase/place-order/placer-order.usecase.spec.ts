@@ -178,6 +178,7 @@ describe("Place Order UseCase Unit Test", () => {
         let output = await placeOrderUseCase.execute(input);
 
         // expect(output.invoiceId).toBe("i1");
+        // expect(output.invoiceId).toBeDefined();
         expect(output.total).toBe(70);
         expect(output.products).toStrictEqual([
           { productId: "p1" },
